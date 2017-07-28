@@ -21,8 +21,6 @@ class MeetingCreateViewForm(forms.ModelForm):
         # now kwargs don't contain 'owner', so we can safely pass it to the
         # base class method
         super(MeetingCreateViewForm, self).__init__(*args, **kwargs)
-        # self.fields['entity'].queryset = Entity.objects.filter(owner=owner).order_by('name')
-        # self.fields['location'].queryset = Location.objects.order_by('city','name')
 
         # http://tothinkornottothink.com/post/7157151391/be-careful-how-you-use-static-variables-in-forms
         self.helper = FormHelper()
@@ -31,7 +29,6 @@ class MeetingCreateViewForm(forms.ModelForm):
                 'Create a meeting',
                 'entity',
                 'start',
-                'end',
                 'title',
                 'location',
                 'agenda',
@@ -50,6 +47,10 @@ class MeetingCreateViewForm(forms.ModelForm):
         self.helper.form_method = 'post'
         # Don't hardwire form to one URL! Then we can use same form to create or
         # update. i.e., don't set "self.helper.form_action = 'create'"
+
+    # Make "end" field not required we can set this field value
+    # programmatically in form_valid of MeetingCreateView in views.py
+    end = forms.DateTimeField(required=False)
 
     class Meta:
         model = Event

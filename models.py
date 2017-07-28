@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.timezone import localtime
 from django.utils.translation import ugettext, ugettext_lazy as _
 
 # Create your models here.
@@ -50,8 +51,10 @@ class Location(models.Model):
         unique_together = (('name', 'address', 'city',),)
 
 
-@python_2_unicode_compatible
 class Meeting(models.Model):
+    '''
+    Abstract class that gets extended by django-scheduler Event model
+    '''
     entity = models.ForeignKey(Entity, on_delete=models.CASCADE)
     location = models.ForeignKey(Location)
     agenda = models.TextField(_("Agenda (optional)"), blank=True)
@@ -60,17 +63,29 @@ class Meeting(models.Model):
     website = models.CharField(max_length=256, blank=True)
     created = models.DateTimeField(auto_now_add=True, null=True)
 
-    def __str__(self):
-        # convert db UTC time to PT for presentation
-        time_utc = self.start
-        timezone_pt = pytz.timezone('America/Los_Angeles')
-        time_local = time_utc.astimezone(timezone_pt)
 
-        return u'({0}) {1}, {2} meeting'.format(self.entity.jurisdiction.name, self.entity.name, time_local.strftime('%A (%Y-%m-%d)'))
+    class Meta:
+        abstract = True
+
 
     def get_absolute_url(self):
         # page 109
         return reverse('meeting-detail', kwargs={'pk': self.pk})
+
+    def meeting_handle(self):
+        '''
+        This is basically a replacement __str__ for use in templates as we
+        can't use __str__ 'cause it gets overridden by child Event class'
+        __str__.
+        '''
+
+        time_local = localtime(self.start)
+
+        return u'({0}) {1}, {2} meeting'.format(
+            self.entity.jurisdiction.name,
+            self.entity.name,
+            time_local.strftime('%A (%Y-%m-%d %H:%M)')
+        )
 
     def contact_string(self):
         contact_list = [
@@ -87,5 +102,3 @@ class Meeting(models.Model):
         else:
             return u' {0}, {1} or {2}.'.format(*contact_list)
 
-    class Meta:
-        abstract = True

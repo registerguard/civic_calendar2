@@ -31,6 +31,8 @@
 			<p><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Fields with a * are required.</p>
 		</div>
 
+		{{ form.errors }}
+
 		{% crispy form %}
 
 		<img class="img-responsive" id="calendar-examples" src="{% static 'images/calendar-examples.png' %}" alt="agenda examples">

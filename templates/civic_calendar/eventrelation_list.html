@@ -15,7 +15,7 @@
         {% for event in event_list %}
             <a class="list-group-item" href="{% url 'update' event.id %}">
                 <p>Click to edit</p>
-                <h4 class="list-group-item-heading">{{ event }}</h4>
+                <h4 class="list-group-item-heading">{{ event.meeting_handle }}</h4>
                 <p class="list-group-item-text"><b>Entity:</b> {{ eventrelation.content_object.entity.name }}</p>
                 <p class="list-group-item-text"><b>Start:</b> {{ eventrelation.content_object.start }}</p>
                 <p class="list-group-item-text"><b>Name:</b> {{ eventrelation.content_object.location.name }}</p>
