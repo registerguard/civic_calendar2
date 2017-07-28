@@ -28,20 +28,6 @@ class MeetingCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
     def form_valid(self, form):
-        # event = form.save()
-        # end = meeting.start + datetime.timedelta(minutes=119)
-        # event = Event(
-            # start=meeting.start,
-            # end=end,
-            # title=u'{0} meeting'.format(meeting.entity.name),
-            # description=meeting.agenda,
-            # May need to get entity and location from form here, 
-            # rather than __init__ values from forms.py ... JH, 7/26/17
-        # )
-        # event.creator=self.request.user
-        # event.save()
-        # er = EventRelation.objects.create_relation(event, meeting)
-        # er.save()
         form.instance.creator = self.request.user
         form.instance.end = form.instance.start + \
             datetime.timedelta(minutes=119)
@@ -50,7 +36,7 @@ class MeetingCreateView(LoginRequiredMixin, CreateView):
         except Calendar.DoesNotExist:
             error_msg = "Calendar object not found."
             raise Calendar.DoesNotExist(error_msg)
-        # cal.events.add(event)
+
         return super(MeetingCreateView, self).form_valid(form)
 
 
