@@ -63,12 +63,7 @@ class MeetingUpdateView(LoginRequiredMixin, UpdateView):
         return kwargs
 
     def form_valid(self, form):
-        event = Event.objects.get(pk=self.object.id)
-        event.start = form.instance.start
-        event.end = form.instance.start + datetime.timedelta(minutes=119)
-        event.description = form.instance.agenda
-        event.creator = self.request.user
-        event.save()
+        form.instance.creator = self.request.user
         return super(MeetingUpdateView, self).form_valid(form)
 
 

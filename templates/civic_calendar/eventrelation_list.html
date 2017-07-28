@@ -26,7 +26,7 @@
                 <p class="list-group-item-text"><b>Contact email:</b> {{ eventrelation.content_object.contact_email }}</p>
                 <p class="list-group-item-text"><b>Contact phone:</b> {{ eventrelation.content_object.contact_phone }}</p>
                 <p class="list-group-item-text">
-                    <b>Entered by:</b> {{ eventrelation.event.creator.first_name }} {{ eventrelation.event.creator.last_name }}
+                    <b>Entered by:</b> {{ event.creator.first_name }} {{ event.creator.last_name }}
                 </p>
             </a>
             <a class="list-group-item" href="{% url 'delete' event.id %}">Delete</a>
