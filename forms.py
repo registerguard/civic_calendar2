@@ -8,6 +8,9 @@ from schedule.models import Event
 
 class CalendarDateTimeWidget(forms.DateTimeInput):
     class Media:
+        css = {
+            'all': ('css/bootstrap-datetimepicker.min.css',)
+        }
         js = (
             'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.0/moment.min.js',
             'js/bootstrap-datetimepicker.min.js',
