@@ -32,10 +32,8 @@ class MeetingCreateViewForm(forms.ModelForm):
                 'Create a meeting',
                 'entity',
                 'start',
-                'title',
                 'location',
                 'agenda',
-                'description',
                 'contact_phone',
                 'contact_email',
                 'website',
@@ -51,8 +49,9 @@ class MeetingCreateViewForm(forms.ModelForm):
         # Don't hardwire form to one URL! Then we can use same form to create or
         # update. i.e., don't set "self.helper.form_action = 'create'"
 
-    # Make "end" field not required we can set this field value
+    # Make "title" & "end" fields not required so we can set this field value
     # programmatically in form_valid of MeetingCreateView in views.py
+    title = forms.CharField(required=False)
     end = forms.DateTimeField(required=False)
 
     class Meta:

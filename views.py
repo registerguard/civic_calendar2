@@ -29,6 +29,7 @@ class MeetingCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
     def form_valid(self, form):
+        form.instance.title = u'{0} meeting'.format(form.instance.entity)
         form.instance.creator = self.request.user
         form.instance.end = form.instance.start + \
             datetime.timedelta(minutes=119)
