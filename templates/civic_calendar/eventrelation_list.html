@@ -16,15 +16,15 @@
             <a class="list-group-item" href="{% url 'update' event.id %}">
                 <p>Click to edit</p>
                 <h4 class="list-group-item-heading">{{ event.meeting_handle }}</h4>
-                <p class="list-group-item-text"><b>Entity:</b> {{ eventrelation.content_object.entity.name }}</p>
-                <p class="list-group-item-text"><b>Start:</b> {{ eventrelation.content_object.start }}</p>
-                <p class="list-group-item-text"><b>Name:</b> {{ eventrelation.content_object.location.name }}</p>
-                <p class="list-group-item-text"><b>Address:</b> {{ eventrelation.content_object.location.address }}</p>
-                <p class="list-group-item-text"><b>City:</b> {{ eventrelation.content_object.location.city }}</p>
-                <p class="list-group-item-text"><b>Agenda:</b> {{ eventrelation.content_object.agenda }}</p>
-                <p class="list-group-item-text"><b>Website:</b> {{ eventrelation.content_object.website }}</p>
-                <p class="list-group-item-text"><b>Contact email:</b> {{ eventrelation.content_object.contact_email }}</p>
-                <p class="list-group-item-text"><b>Contact phone:</b> {{ eventrelation.content_object.contact_phone }}</p>
+                <p class="list-group-item-text"><b>Entity:</b> {{ event.entity.name }}</p>
+                <p class="list-group-item-text"><b>Start:</b> {{ event.start }}</p>
+                <p class="list-group-item-text"><b>Name:</b> {{ event.location.name }}</p>
+                <p class="list-group-item-text"><b>Address:</b> {{ event.location.address }}</p>
+                <p class="list-group-item-text"><b>City:</b> {{ event.location.city }}</p>
+                <p class="list-group-item-text"><b>Agenda:</b> {{ event.agenda }}</p>
+                <p class="list-group-item-text"><b>Website:</b> {{ event.website }}</p>
+                <p class="list-group-item-text"><b>Contact email:</b> {{ event.contact_email }}</p>
+                <p class="list-group-item-text"><b>Contact phone:</b> {{ event.contact_phone }}</p>
                 <p class="list-group-item-text">
                     <b>Entered by:</b> {{ event.creator.first_name }} {{ event.creator.last_name }}
                 </p>
