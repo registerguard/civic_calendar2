@@ -170,7 +170,7 @@ class OccurrenceListView(ListView):
         Returns a dictionary of context data
         '''
         request = self.request
-        meetings = self.get_queryset()
+        meetings = getattr(self, 'get_queryset', None)()
 
         if request.META['HTTP_USER_AGENT'].count('Macintosh'):
             client_os = u'MAC'
@@ -187,11 +187,17 @@ class OccurrenceListView(ListView):
         Set the HTTP response 'Content-Disposition' header & content_type and
         encode to utf-16le, the encoding that Adobe InDesign demands. 
         '''
-        template = get_template(self.template_name)
-        html = template.render(self.get_context_data())
-        if self.get_context_data()['os'] == 'WIN':
-            html = html.replace(u'\n', u'\r\n') # Convert Unix line endings to Windows
-        html = html.encode('utf-16-le')
-        response = HttpResponse(html, content_type='text/plain')
-        response['Content-Disposition'] = 'attachment; filename=cr.calendar.txt'
+        if self.get_context_data()['event_list']:
+            template = get_template(self.template_name)
+            html = template.render(self.get_context_data())
+            if self.get_context_data()['os'] == 'WIN':
+                html = html.replace(u'\n', u'\r\n') # Convert Unix line endings to Windows
+            html = html.encode('utf-16-le')
+            response = HttpResponse(html, content_type='text/plain')
+            response['Content-Disposition'] = 'attachment; filename=cr.calendar.txt'
+        else:
+            template = get_template('civic_calendar/occurrence_list_screen.html')
+            html = template.render(self.get_context_data())
+            response = HttpResponse(html, content_type='text/html')
+            response['Content-Disposition'] = 'inline'
         return response
