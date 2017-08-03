@@ -99,6 +99,8 @@ class Meeting(models.Model):
             return u' {0}.'.format(contact_list[0])
         elif contact_list_len == 2:
             return u' {0} or {1}.'.format(*contact_list)
-        else:
+        elif contact_list_len == 3:
             return u' {0}, {1} or {2}.'.format(*contact_list)
+        else:
+            return u''
 

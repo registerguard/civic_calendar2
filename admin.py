@@ -4,11 +4,18 @@ from __future__ import unicode_literals
 from django.contrib import admin
 
 from .models import Jurisdiction, Entity, Location
+from schedule.models import Event
 
 class LocationAdmin(admin.ModelAdmin):
     list_display = ('name', 'address', 'city',)
     list_editable = ('address', 'city',)
     list_filter = ('city',)
+
+
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('meeting_handle', 'start', 'created',)
+    list_editable = ('start',)
+    list_filter = ('creator__username',)
 
 
 class EntityAdmin(admin.ModelAdmin):
@@ -20,5 +27,7 @@ class EntityAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Jurisdiction)
+admin.site.unregister(Event)
+admin.site.register(Event, EventAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Entity, EntityAdmin)

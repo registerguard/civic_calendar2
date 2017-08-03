@@ -2,13 +2,15 @@
 from __future__ import unicode_literals
 
 import datetime
+import operator
 import pytz
 
 from braces.views import LoginRequiredMixin
 
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.template.loader import get_template
 from django.views.generic  import CreateView, DeleteView, ListView, UpdateView
 from schedule.models import Calendar, Event
 from schedule.periods import Period
@@ -118,3 +120,78 @@ class MeetingDeleteView(LoginRequiredMixin, DeleteView):
         else:
             raise Http404('You are not the owner of this event.')
 
+
+class OccurrenceListView(ListView):
+    '''
+    Display online meetings list/outputs InDesign-formatted text
+    '''
+    template_name = 'civic_calendar/occurrence_list.html'
+    pacific = pytz.timezone('US/Pacific')
+
+    def get_queryset(self):
+        custom_date = self.request.GET.get('date', '')
+
+        if custom_date:
+            tomorrow = self.pacific.localize(
+                datetime.datetime.strptime(custom_date, '%Y%m%d') + \
+                datetime.timedelta(days=1)
+            )
+        else:
+            tomorrow = self.pacific.localize(
+                datetime.datetime.now().replace(hour=0, minute=0) + \
+                datetime.timedelta(days=1)
+            )
+
+        my_events = Event.objects.all()
+        upcoming = Period(
+            my_events, tomorrow, tomorrow + datetime.timedelta(days=2)
+        )
+
+        occurrence_list = upcoming.get_occurrences()
+        # sort by jurisdiction, start time, then name of entity
+        # https://stackoverflow.com/questions/2412770/good-ways-to-sort-a-queryset-django
+        ordered = sorted(
+            occurrence_list,
+            key=operator.attrgetter(
+                'event.entity.jurisdiction.name',
+                'event.start',
+                'event.entity.name',
+            )
+        )
+
+        for occurrence_item in ordered:
+            # replace u'\r\n' with u' ' in Agenda text
+            occurrence_item.event.agenda = occurrence_item.event.agenda.replace(u'\r\n', u' ')
+
+        return ordered
+
+    def get_context_data(self, **kwargs):
+        '''
+        Returns a dictionary of context data
+        '''
+        request = self.request
+        meetings = self.get_queryset()
+
+        if request.META['HTTP_USER_AGENT'].count('Macintosh'):
+            client_os = u'MAC'
+        else:
+            client_os = u'WIN'
+
+        return {
+            'event_list': meetings,
+            'os': client_os,
+        }
+
+    def get(self, *args, **kwargs):
+        '''
+        Set the HTTP response 'Content-Disposition' header & content_type and
+        encode to utf-16le, the encoding that Adobe InDesign demands. 
+        '''
+        template = get_template(self.template_name)
+        html = template.render(self.get_context_data())
+        if self.get_context_data()['os'] == 'WIN':
+            html = html.replace(u'\n', u'\r\n') # Convert Unix line endings to Windows
+        html = html.encode('utf-16-le')
+        response = HttpResponse(html, content_type='text/plain')
+        response['Content-Disposition'] = 'attachment; filename=cr.calendar.txt'
+        return response
