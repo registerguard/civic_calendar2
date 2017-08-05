@@ -93,8 +93,15 @@ class WebMeetingListView(ListView):
         upcoming = Period(
             my_events, my_today, my_today+datetime.timedelta(days=30)
         )
-        event_id_list = [occurrence.event_id for occurrence in upcoming.get_occurrences()]
-        return EventRelation.objects.filter(event_id__in=event_id_list)
+        ordered = sorted(
+            upcoming.get_occurrences(),
+            key=operator.attrgetter(
+                'event.entity.jurisdiction.name',
+                'event.start',
+                'event.entity.name',
+            )
+        )
+        return ordered
 
 
 class MeetingDeleteView(LoginRequiredMixin, DeleteView):
@@ -161,7 +168,8 @@ class OccurrenceListView(ListView):
 
         for occurrence_item in ordered:
             # replace u'\r\n' with u' ' in Agenda text
-            occurrence_item.event.agenda = occurrence_item.event.agenda.replace(u'\r\n', u' ')
+            occurrence_item.event.agenda = \
+                occurrence_item.event.agenda.replace(u'\r\n', u' ')
 
         return ordered
 
@@ -188,15 +196,21 @@ class OccurrenceListView(ListView):
         encode to utf-16le, the encoding that Adobe InDesign demands. 
         '''
         if self.get_context_data()['event_list']:
+            # Serve Adobe InDesign-formatted file download.
             template = get_template(self.template_name)
             html = template.render(self.get_context_data())
+            # Convert Unix line endings to Windows
             if self.get_context_data()['os'] == 'WIN':
-                html = html.replace(u'\n', u'\r\n') # Convert Unix line endings to Windows
+                html = html.replace(u'\n', u'\r\n')
             html = html.encode('utf-16-le')
             response = HttpResponse(html, content_type='text/plain')
-            response['Content-Disposition'] = 'attachment; filename=cr.calendar.txt'
+            response['Content-Disposition'] = \
+                'attachment; filename=cr.calendar.txt'
         else:
-            template = get_template('civic_calendar/occurrence_list_screen.html')
+            # Serve a plain 'ol web page if no upcoming meetings.
+            template = get_template(
+                'civic_calendar/occurrence_list_screen.html'
+            )
             html = template.render(self.get_context_data())
             response = HttpResponse(html, content_type='text/html')
             response['Content-Disposition'] = 'inline'

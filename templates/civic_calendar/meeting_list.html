@@ -1,0 +1,12 @@
+{% extends 'dox/bulldog.html' %}
+
+{% block body %}
+<div class="w_row">
+    <div class="w_col w_B300 w_C640 w_D980 Bla Cla Dla">
+    {% for occurrence in object_list %}
+        {% ifchanged %}<h4>{{ occurrence.event.entity.jurisdiction.name }}</h4>{% endifchanged %}
+        <p>{{ occurrence.event.entity.name }} {{ occurrence.start }}</p>
+    {% endfor %}
+    </div> <!-- /.w_col -->
+</div> <!-- /.w_row -->
+{% endblock body %}
