@@ -84,6 +84,7 @@ class WebMeetingListView(ListView):
     Provide a Web view listing for public consumption.
     '''
     template_name = 'civic_calendar/meeting_list.html'
+
     def get_queryset(self):
         pacific = pytz.timezone('US/Pacific')
         my_events = Event.objects.all()
@@ -102,6 +103,11 @@ class WebMeetingListView(ListView):
             )
         )
         return ordered
+
+    def get_context_data(self, **kwargs):
+        context = super(WebMeetingListView, self).get_context_data(**kwargs)
+        context['page'] = {'title': '<a href="//registerguard.com/rg/news/local/">Local</a>', 'description_short': 'Calendar',}
+        return context
 
 
 class MeetingDeleteView(LoginRequiredMixin, DeleteView):

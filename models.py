@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
@@ -104,3 +105,25 @@ class Meeting(models.Model):
         else:
             return u''
 
+
+class Profile(models.Model):
+    '''
+    Adding fields to User model so that we can have a non-username handle
+    to use in the URL of the User-based index page. (Otherwise we'd have to use
+    the login username in the URL and that wouldn't be good.)
+
+    And using the OneToOneField method so that we don't have to mess with
+    changing the AUTH_USER_MODEL in settings for the entire project.
+    '''
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    pretty_name = models.CharField(max_length=256, blank=True)
+    slug = models.SlugField(blank=True)
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
