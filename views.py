@@ -236,5 +236,5 @@ class ProfileMeetingList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ProfileMeetingList, self).get_context_data(**kwargs)
-        context['page'] = {'title': '<a href="//registerguard.com/rg/news/local/">Local</a>', 'description_short': '''<a href="{% url 'public-meeting-list' %}">Calendar</a>''',}
+        context['page'] = {'title': '<a href="//registerguard.com/rg/news/local/">Local</a>', 'description_short': 'Calendar',}
         return context

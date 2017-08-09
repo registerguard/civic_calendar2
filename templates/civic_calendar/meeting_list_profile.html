@@ -1,5 +1,35 @@
 {% extends 'dox/bulldog.html' %}
 
+{% block location %}
+	
+	{% if page.title or page.description_short %}
+		
+		<header>
+			
+			<div id="loc">
+				
+				<hgroup>
+					
+					<div class="streamer">
+						
+						<h1>{% block location_title %}{% if page.title %}{{ page.title|safe }}{% else %}&nbsp;{% endif %}{% endblock location_title %}</h1>
+						
+						<h2>{% block location_description %}{% if page.description_short %}<a href="{% url 'public-meeting-list' %}">{{ page.description_short }}</a>{% else %}&nbsp;{% endif %}{% endblock location_description %}</h2>
+						
+					</div> <!-- /.streamer -->
+					
+				</hgroup>
+				
+				{% if page.description_long %}<p>{{ page.description_long|safe }}</p>{% endif %}
+				
+			</div> <!-- /#loc -->
+			
+		</header>
+		
+	{% endif %}
+	
+{% endblock location %}
+
 {% block body %}
 <div class="w_row">
     <div class="w_col w_B300 w_C640 w_D980 Bla Cla Dla">
