@@ -2,8 +2,11 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
+from django.forms import BaseModelFormSet
 
-from .models import Jurisdiction, Entity, Location
+from .models import Jurisdiction, Entity, Location, Profile
 from schedule.models import Event
 
 class LocationAdmin(admin.ModelAdmin):
@@ -26,8 +29,32 @@ class EntityAdmin(admin.ModelAdmin):
     ordering = ('name',)
 
 
+class ProfileInline(admin.StackedInline):
+    model = Profile
+    can_delete = False
+    verbose_name_plural = 'Profile'
+    fk_name= 'user'
+    prepopulated_fields = {'slug': ('pretty_name',)}
+
+
+class CustomeUserAdmin(UserAdmin):
+    list_display = ('username', 'profile_pretty_name', 'email', 'first_name', 'last_name', 'is_staff',)
+    inlines = (ProfileInline,)
+
+    def profile_pretty_name(self, obj):
+        return '{0}'.format(obj.profile.pretty_name)
+    profile_pretty_name.short_description = 'Pretty name'
+
+    def get_inline_instances(self, request, obj=None):
+        if not obj:
+            return list()
+        return super(CustomeUserAdmin, self).get_inline_instances(request, obj)
+
+
 admin.site.register(Jurisdiction)
 admin.site.unregister(Event)
 admin.site.register(Event, EventAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Entity, EntityAdmin)
+admin.site.unregister(User)
+admin.site.register(User, CustomeUserAdmin)

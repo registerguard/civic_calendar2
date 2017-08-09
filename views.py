@@ -221,3 +221,20 @@ class OccurrenceListView(ListView):
             response = HttpResponse(html, content_type='text/html')
             response['Content-Disposition'] = 'inline'
         return response
+
+
+class ProfileMeetingList(ListView):
+    '''
+    Event.objects.filter(creator__profile__slug='pretty-name-slug-here')
+    '''
+    model = Event
+    template_name = 'civic_calendar/meeting_list_profile.html'
+
+    def get_queryset(self):
+        slug = self.kwargs['slug']
+        return Event.objects.filter(creator__profile__slug=slug).order_by('-start')
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileMeetingList, self).get_context_data(**kwargs)
+        context['page'] = {'title': '<a href="//registerguard.com/rg/news/local/">Local</a>', 'description_short': '''<a href="{% url 'public-meeting-list' %}">Calendar</a>''',}
+        return context

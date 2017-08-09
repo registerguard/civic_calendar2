@@ -44,7 +44,8 @@
             {% ifchanged %}
             <h1 class="head{% if forloop.first %} give{% endif %}">{{ occurrence.event.entity.jurisdiction.name }}</h1>
             {% endifchanged %}
-            <p><b>{{ occurrence.event.entity.name }}</b>, {{ occurrence.start }}</p>
+            <p><i><a href="{% url 'profile-meeting-list' occurrence.event.creator.profile.slug %}">{{ occurrence.event.creator.profile.pretty_name }}</a></i><br>
+				<b>{{ occurrence.event.entity.name }}</b>, {{ occurrence.start }}</p>
         {% endfor %}
         </div> <!-- /#story -->
     </div> <!-- /.w_col -->

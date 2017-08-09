@@ -40,6 +40,11 @@ urlpatterns = [
         view=views.WebMeetingListView.as_view(),
         name='public-meeting-list',
     ),
+    url(
+        regex=r'^meetings/(?P<slug>[-\w]+)/$',
+        view=views.ProfileMeetingList.as_view(),
+        name='profile-meeting-list',
+    ),
     url(r'^accounts/login/$', login, name='login'),
     url(r'^accounts/logout/$', logout, {'next_page': '/civic/'}, name='logout'),
     url(
