@@ -1,8 +1,8 @@
 {% extends 'dox/bulldog.html' %}
 
-{% block head_title %}Civic Calendar index by organization{% endblock %}
+{% block head_title %}{{ title_string }} civic calendar{% endblock %}
 
-{% block head_description %}upcoming civic calendar listing for Lane County, Oregon, sorted by organization{% endblock %}
+{% block head_description %}{{ title_string }} upcoming civic calendar listing for Lane County, Oregon{% endblock %}
 
 {% block head_keywords %}civic, calendar, listing, organization{% endblock %}
 
@@ -20,7 +20,7 @@
 						
 						<h1>{% block location_title %}{% if page.title %}{{ page.title|safe }}{% else %}&nbsp;{% endif %}{% endblock location_title %}</h1>
 						
-						<h2>{% block location_description %}{% if page.description_short %}<a href="{% url 'public-meeting-list' %}">{{ page.description_short }}</a>{% else %}&nbsp;{% endif %}{% endblock location_description %}</h2>
+						<h2>{% block location_description %}{% if page.description_short %}<a href="{% url 'public-meeting-list' %}">{{ title_string }} {{ page.description_short }}</a>{% else %}&nbsp;{% endif %}{% endblock location_description %}</h2>
 						
 					</div> <!-- /.streamer -->
 					
@@ -38,16 +38,39 @@
 
 {% block body %}
 <div class="w_row">
-    <div class="w_col w_B300 w_C640 w_D980 Bla Cla Dla">
-        <div id="story">
-        {% for event in object_list %}
-            {% ifchanged %}
-            <h1 class="head{% if forloop.first %} give{% endif %}">{{ event.entity.jurisdiction.name }}</h1>
-            {% endifchanged %}
-            <p><i>{{ event.creator.profile.pretty_name }}</i><br>
-				<b>{{ event.entity.name }}</b>, {{ event.start }}</p>
-        {% endfor %}
-        </div> <!-- /#story -->
-    </div> <!-- /.w_col -->
+	<div class="w_col w_B300 w_C640 w_D980 Bla Cla Dla">
+		<ul class="li3">
+		{% for event in object_list %}
+			<li>
+				<article>
+					<div class="w_line">
+
+						<div class="w_unit w_C1of8">
+							<div class="wrap">
+								<span class="label">
+									{{ event.entity.jurisdiction.name }}
+								</span>
+							</div> <!-- /.wrap -->
+						</div> <!-- /.w_unit -->
+
+						<div class="w_unit w_C3of8">
+							<div class="wrap">
+								<h2 class="sh6">{{ event.entity.name }}</h2>
+								<p class="pub">{{ event.start }}</p>
+							</div> <!-- /.wrap -->
+						</div> <!-- /.w_unit -->
+
+						<div class="w_unit w_C1of2">
+							<div class="wrap">
+								<p>{{ event.agenda }}</p>
+							</div> <!-- /.wrap -->
+						</div> <!-- /.w_unit -->
+
+					</div> <!-- /.w_line -->
+				</article>
+			</li>
+		{% endfor %}
+		</ul>
+	</div> <!-- /.w_col -->
 </div> <!-- /.w_row -->
 {% endblock body %}

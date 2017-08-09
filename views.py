@@ -106,7 +106,7 @@ class WebMeetingListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(WebMeetingListView, self).get_context_data(**kwargs)
-        context['page'] = {'title': '<a href="//registerguard.com/rg/news/local/">Local</a>', 'description_short': 'Calendar',}
+        context['page'] = {'title': '<a href="//registerguard.com/rg/news/local/">Local</a>', 'description_short': 'Civic Calendar',}
         return context
 
 
@@ -236,5 +236,6 @@ class ProfileMeetingList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ProfileMeetingList, self).get_context_data(**kwargs)
-        context['page'] = {'title': '<a href="//registerguard.com/rg/news/local/">Local</a>', 'description_short': 'Calendar',}
+        context['page'] = {'title': '<a href="//registerguard.com/rg/news/local/">Local</a>', 'description_short': 'Civic Calendar',}
+        context['title_string'] = context['event_list'][0].creator.profile.pretty_name
         return context

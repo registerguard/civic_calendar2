@@ -1,6 +1,6 @@
 {% extends 'dox/bulldog.html' %}
 
-{% block head_title %}Calendar{% endblock %}
+{% block head_title %}Civic Calendar{% endblock %}
 
 {% block head_description %}upcoming civic calendar listing for Lane County, Oregon{% endblock %}
 
@@ -39,15 +39,40 @@
 {% block body %}
 <div class="w_row">
     <div class="w_col w_B300 w_C640 w_D980 Bla Cla Dla">
-        <div id="story">
-        {% for occurrence in object_list %}
-            {% ifchanged %}
-            <h1 class="head{% if forloop.first %} give{% endif %}">{{ occurrence.event.entity.jurisdiction.name }}</h1>
-            {% endifchanged %}
-            <p><i><a href="{% url 'profile-meeting-list' occurrence.event.creator.profile.slug %}">{{ occurrence.event.creator.profile.pretty_name }}</a></i><br>
-				<b>{{ occurrence.event.entity.name }}</b>, {{ occurrence.start }}</p>
-        {% endfor %}
-        </div> <!-- /#story -->
+		<ul class="li3">
+		{% for occurrence in object_list %}
+		<li>
+			<article>
+				<div class="w_line">
+
+					<div class="w_unit w_C1of8">
+						<div class="wrap">
+							<span class="label">
+								{{ occurrence.event.entity.jurisdiction.name }}
+							</span>
+						</div> <!-- /.wrap -->
+					</div> <!-- /.w_unit -->
+
+					<div class="w_unit w_C3of8">
+						<div class="wrap">
+							<h1 class="h6"><a href="{% url 'profile-meeting-list' occurrence.event.creator.profile.slug %}">{{ occurrence.event.creator.profile.pretty_name }}</a></h1>
+							<h2 class="sh6">{{ occurrence.event.entity.name }}</h2>
+							<p class="pub">{{ occurrence.start }}</p>
+							<p>{{ occurrence.event.contact_string|urlize }}</p>
+						</div> <!-- /.wrap -->
+					</div> <!-- /.w_unit -->
+
+					<div class="w_unit w_C1of2">
+						<div class="wrap">
+							<p>{{ occurrence.event.agenda }}</p>
+						</div> <!-- /.wrap -->
+					</div> <!-- /.w_unit -->
+
+				</div> <!-- /.w_line -->
+			</article>
+		</li>
+		{% endfor %}
+		</ul>
     </div> <!-- /.w_col -->
 </div> <!-- /.w_row -->
 {% endblock body %}
