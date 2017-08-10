@@ -51,7 +51,11 @@ class CustomeUserAdmin(UserAdmin):
         return super(CustomeUserAdmin, self).get_inline_instances(request, obj)
 
 
-admin.site.register(Jurisdiction)
+class JurisdictionAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('name',)}
+
+
+admin.site.register(Jurisdiction, JurisdictionAdmin)
 admin.site.unregister(Event)
 admin.site.register(Event, EventAdmin)
 admin.site.register(Location, LocationAdmin)

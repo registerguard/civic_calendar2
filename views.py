@@ -225,6 +225,8 @@ class OccurrenceListView(ListView):
 
 class ProfileMeetingList(ListView):
     '''
+    An index view based on the slug/pretty name.
+
     Event.objects.filter(creator__profile__slug='pretty-name-slug-here')
     '''
     model = Event
@@ -232,10 +234,39 @@ class ProfileMeetingList(ListView):
 
     def get_queryset(self):
         slug = self.kwargs['slug']
-        return Event.objects.filter(creator__profile__slug=slug).order_by('-start')
+        return Event.objects.filter(creator__profile__slug=slug).\
+            order_by('-start')
 
     def get_context_data(self, **kwargs):
         context = super(ProfileMeetingList, self).get_context_data(**kwargs)
-        context['page'] = {'title': '<a href="//registerguard.com/rg/news/local/">Local</a>', 'description_short': 'Civic Calendar',}
-        context['title_string'] = context['event_list'][0].creator.profile.pretty_name
+        context['page'] = {
+            'title': '<a href="//registerguard.com/rg/news/local/">Local</a>',
+            'description_short': 'Civic Calendar',
+        }
+        context['title_string'] = \
+            context['event_list'][0].creator.profile.pretty_name
+        return context
+
+class TownMeetingList(ListView):
+    '''
+    An index view based on the town (jurisdiction) slug.
+
+    Event.objects.filter(entity__jurisdiction__slug='slugified-town-name')
+    '''
+    model = Event
+    template_name = 'civic_calendar/meeting_list_town.html'
+
+    def get_queryset(self):
+        slug = self.kwargs['slug']
+        return Event.objects.filter(entity__jurisdiction__slug=slug).\
+            order_by('-start')
+
+    def get_context_data(self, **kwargs):
+        context = super(TownMeetingList, self).get_context_data(**kwargs)
+        context['page'] = {
+            'title': '<a href="//registerguard.com/rg/news/local/">Local</a>',
+            'description_short': 'Civic Calendar',
+        }
+        context['title_string'] = \
+            context['event_list'][0].entity.jurisdiction.name
         return context
