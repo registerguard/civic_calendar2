@@ -50,6 +50,11 @@ urlpatterns = [
         view=views.TownMeetingList.as_view(),
         name='town-meeting-list',
     ),
+    url(
+        regex=r'^meetings/entity/(?P<slug>[-\w\d]+)/$',
+        view=views.EntityMeetingList.as_view(),
+        name='entity-meeting-list',
+    ),
     url(r'^accounts/login/$', login, name='login'),
     url(r'^accounts/logout/$', logout, {'next_page': '/civic/'}, name='logout'),
     url(

@@ -270,3 +270,27 @@ class TownMeetingList(ListView):
         context['title_string'] = \
             context['event_list'][0].entity.jurisdiction.name
         return context
+
+
+class EntityMeetingList(ListView):
+    '''
+    An index view based on the enity slug.
+
+    Event.object.filter(entity.slug=slug).order_by('-start')
+    '''
+    model = Event
+    template_name = 'civic_calendar/meeting_list_entity.html'
+
+    def get_queryset(self):
+        slug = self.kwargs['slug']
+        return Event.objects.filter(entity__slug=slug).order_by('-start')
+
+    def get_context_data(self, **kwargs):
+        context = super(EntityMeetingList, self).get_context_data(**kwargs)
+        context['page'] = {
+            'title': '<a href="//registerguard.com/rg/news/local/">Local</a>',
+            'description_short': 'Civic Calendar',
+        }
+        context['title_string'] = \
+            context['event_list'][0].entity.name
+        return context

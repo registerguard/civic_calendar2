@@ -23,10 +23,11 @@ class EventAdmin(admin.ModelAdmin):
 
 class EntityAdmin(admin.ModelAdmin):
     # https://stackoverflow.com/questions/43390140/django-disallowedmodeladminlookup-for-lookup-in-admin-list-filter/44665384#44665384
-    list_display = ('name', 'owner', 'jurisdiction',)
-    list_editable = ('owner', 'jurisdiction',)
+    list_display = ('name', 'owner', 'jurisdiction', 'slug',)
+    list_editable = ('owner', 'jurisdiction', 'slug',)
     list_filter = ('owner__username',)
     ordering = ('name',)
+    prepopulated_fields = {'slug': ('jurisdiction', 'name',)}
 
 
 class ProfileInline(admin.StackedInline):

@@ -26,6 +26,7 @@ class Jurisdiction(models.Model):
 @python_2_unicode_compatible
 class Entity(models.Model):
     name = models.CharField(max_length=255)
+    slug = models.SlugField(blank=True)
     owner = models.ForeignKey(User, null=True)
     jurisdiction = models.ForeignKey(Jurisdiction)
 
@@ -55,6 +56,7 @@ class Location(models.Model):
         unique_together = (('name', 'address', 'city',),)
 
 
+@python_2_unicode_compatible
 class Meeting(models.Model):
     '''
     Abstract class that gets extended by django-scheduler Event model
@@ -66,6 +68,13 @@ class Meeting(models.Model):
     contact_email = models.EmailField(blank=True)
     website = models.CharField(max_length=256, blank=True)
     created = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        time_utc = self.start
+        timezone_pt = pytz.timezone('America/Los_Angeles')
+        time_local = time_utc.astimezone(timezone_pt)
+
+        return u'({0}) {1}, {2} meeting'.format(self.entity.jurisdiction.name, self.entity.name, time_local.strftime('%A (%Y-%m-%d)'))
 
 
     class Meta:
@@ -109,6 +118,7 @@ class Meeting(models.Model):
             return u''
 
 
+@python_2_unicode_compatible
 class Profile(models.Model):
     '''
     Adding fields to User model so that we can have a non-username handle
@@ -121,6 +131,9 @@ class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     pretty_name = models.CharField(max_length=256, blank=True)
     slug = models.SlugField(blank=True)
+
+    def __str__(self):
+        return '{0}'.format(self.pretty_name)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

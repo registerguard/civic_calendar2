@@ -48,7 +48,7 @@
 					<div class="w_unit w_C1of8">
 						<div class="wrap">
 							<span class="label">
-								{{ occurrence.event.entity.jurisdiction.name }}
+								<a href="{% url 'town-meeting-list' occurrence.event.entity.jurisdiction.slug %}">{{ occurrence.event.entity.jurisdiction.name }}</a>
 							</span>
 						</div> <!-- /.wrap -->
 					</div> <!-- /.w_unit -->
