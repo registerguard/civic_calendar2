@@ -19,9 +19,10 @@
 
 						<div class="w_unit w_C3of8">
 							<div class="wrap">
-                                <h1 class="h6">{{ event.creator.profile.pretty_name }}</h1>
-								<h2 class="sh6">{{ event.entity.name }}</h2>
-								<p class="pub">{{ event.start }}</p>
+                                <h1 class="h6"><a href="{% url 'profile-meeting-list' event.creator.profile.slug %}">{{ event.creator.profile.pretty_name }}</a></h1>
+								<h2 class="sh6"><a href="{% url 'entity-meeting-list' event.entity.slug %}">{{ event.entity.name }}</a></h2>
+								<p class="pub"><a href="{% url 'day-meeting-list' event.start|date:'Y' event.start|date:'b' event.start|date:'j' %}">{{ event.start }}</a></p>
+								<p>{{ occurrence.event.contact_string|urlize }}</p>
 							</div> <!-- /.wrap -->
 						</div> <!-- /.w_unit -->
 

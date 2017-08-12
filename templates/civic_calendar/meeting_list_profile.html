@@ -48,15 +48,15 @@
 						<div class="w_unit w_C1of8">
 							<div class="wrap">
 								<span class="label">
-									{{ event.entity.jurisdiction.name }}
+									<a href="{% url 'town-meeting-list' event.entity.jurisdiction.slug %}">{{ event.entity.jurisdiction.name }}</a>
 								</span>
 							</div> <!-- /.wrap -->
 						</div> <!-- /.w_unit -->
 
 						<div class="w_unit w_C3of8">
 							<div class="wrap">
-								<h2 class="sh6">{{ event.entity.name }}</h2>
-								<p class="pub">{{ event.start }}</p>
+								<h2 class="sh6"><a href="{% url 'entity-meeting-list' event.entity.slug %}">{{ event.entity.name }}</a></h2>
+								<p class="pub"><a href="{% url 'day-meeting-list' event.start|date:'Y' event.start|date:'b' event.start|date:'j' %}">{{ event.start }}</a></p>
 							</div> <!-- /.wrap -->
 						</div> <!-- /.w_unit -->
 

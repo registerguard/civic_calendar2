@@ -1,0 +1,74 @@
+{% extends 'civic_calendar/meeting_list_profile.html' %}
+
+{% block head_title %}{{ title_string|date:'l, N j, Y,' }} civic calendar{% endblock %}
+
+{% block location %}
+
+{% if page.title or page.description_short %}
+    
+    <header>
+        
+        <div id="loc">
+            
+            <hgroup>
+                
+                <div class="streamer">
+                    
+                    <h1>{% block location_title %}{% if page.title %}{{ page.title|safe }}{% else %}&nbsp;{% endif %}{% endblock location_title %}</h1>
+                    
+                    <h2>{% block location_description %}{% if page.description_short %}<a href="{% url 'public-meeting-list' %}">{{ title_string|date:'l, N j, Y,' }} {{ page.description_short|safe }}</a>{% else %}&nbsp;{% endif %}{% endblock location_description %}</h2>
+                    
+                </div> <!-- /.streamer -->
+                
+            </hgroup>
+            
+            {% if page.description_long %}<p>{{ page.description_long|safe }}</p>{% endif %}
+            
+        </div> <!-- /#loc -->
+        
+    </header>
+    
+{% endif %}
+
+{% endblock location %}
+
+{% block body %}
+<div class="w_row">
+	<div class="w_col w_B300 w_C640 w_D980 Bla Cla Dla">
+		<ul class="li3">
+		{% for event in object_list %}
+			<li>
+				<article>
+					<div class="w_line">
+
+						<div class="w_unit w_C1of8">
+							<div class="wrap">
+								<span class="label">
+									<a href="{% url 'town-meeting-list' event.entity.jurisdiction.slug %}">{{ event.entity.jurisdiction.name }}</a>
+								</span>
+							</div> <!-- /.wrap -->
+						</div> <!-- /.w_unit -->
+
+						<div class="w_unit w_C3of8">
+							<div class="wrap">
+                                <h1 class="h6"><a href="{% url 'profile-meeting-list' event.creator.profile.slug %}">{{ event.creator.profile.pretty_name }}</a></h1>
+								<h2 class="sh6"><a href="{% url 'entity-meeting-list' event.entity.slug %}">{{ event.entity.name }}</a></h2>
+								<p class="pub">{{ event.start }}</p>
+								<p>{{ occurrence.event.contact_string|urlize }}</p>
+							</div> <!-- /.wrap -->
+						</div> <!-- /.w_unit -->
+
+						<div class="w_unit w_C1of2">
+							<div class="wrap">
+								<p>{{ event.agenda }}</p>
+							</div> <!-- /.wrap -->
+						</div> <!-- /.w_unit -->
+
+					</div> <!-- /.w_line -->
+				</article>
+			</li>
+		{% endfor %}
+		</ul>
+	</div> <!-- /.w_col -->
+</div> <!-- /.w_row -->
+{% endblock body %}

@@ -12,6 +12,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import get_template
 from django.views.generic  import CreateView, DeleteView, ListView, UpdateView
+from django.views.generic.dates import DayArchiveView
 from schedule.models import Calendar, Event
 from schedule.periods import Period
 from .forms import MeetingCreateViewForm
@@ -292,5 +293,20 @@ class EntityMeetingList(ListView):
             'description_short': 'Civic Calendar',
         }
         context['title_string'] = \
-            context['event_list'][0].entity.name
+            '{0} {1}'.format(context['event_list'][0].creator.profile.pretty_name, context['event_list'][0].entity.name)
+        return context
+
+
+class DayMeetingList(DayArchiveView):
+    queryset = Event.objects.all()
+    date_field = 'start'
+    allow_future = True
+
+    def get_context_data(self, **kwargs):
+        context = super(DayMeetingList, self).get_context_data(**kwargs)
+        context['page'] = {
+            'title': '<a href="//registerguard.com/rg/news/local/">Local</a>',
+            'description_short': 'Civic Calendar',
+        }
+        context['title_string'] = context['event_list'][0].start
         return context

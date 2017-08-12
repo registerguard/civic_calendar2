@@ -55,6 +55,11 @@ urlpatterns = [
         view=views.EntityMeetingList.as_view(),
         name='entity-meeting-list',
     ),
+    url(
+        regex=r'^meetings/(?P<year>[0-9]{4})/(?P<month>[-\w]+)/(?P<day>[0-9]+)/$',
+        view=views.DayMeetingList.as_view(),
+        name='day-meeting-list',
+    ),
     url(r'^accounts/login/$', login, name='login'),
     url(r'^accounts/logout/$', logout, {'next_page': '/civic/'}, name='logout'),
     url(
