@@ -9,4 +9,4 @@ $ python manage.py runserver 172.16.1.174:8080 --settings=django_root.settings.s
 
 Hat tip: https://stackoverflow.com/questions/9323076/ec2-hosts-django-with-ip-address-cant-be-assigned-to-error#answer-9323154
 
-Also, remember to use a setting that has `Debug = True` so you can get your assets served by the test server.
+Also, remember to use a `settings` that has `Debug = True` so you can get your assets served by the test server.
