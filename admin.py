@@ -57,8 +57,8 @@ class JurisdictionAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Jurisdiction, JurisdictionAdmin)
-admin.site.unregister(Event)
 admin.site.register(Event, EventAdmin)
+admin.site.unregister(Event)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Entity, EntityAdmin)
 admin.site.unregister(User)
