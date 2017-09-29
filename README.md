@@ -1,6 +1,9 @@
 Like [civic_calendar](https://github.com/registerguard/civic_calendar) only BETTER.
 
 #### Hot AWS-hosted Django development server tip ####
+
+Use `0.0.0.0:8080` or ... 
+
 Use the AWS Internal IP address (check the AWS Console to find out what it is) and the runserver'll work (provided the port you use is open). i.e.:
 
 ```shell
