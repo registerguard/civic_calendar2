@@ -25,6 +25,9 @@ class MeetingCreateViewForm(forms.ModelForm):
         # base class method
         super(MeetingCreateViewForm, self).__init__(*args, **kwargs)
 
+        self.fields['entity'].queryset = Entity.objects.filter(owner=owner).order_by('name')
+        self.fields['location'].queryset = Location.objects.order_by('city', 'name')
+
         # http://tothinkornottothink.com/post/7157151391/be-careful-how-you-use-static-variables-in-forms
         self.helper = FormHelper()
         self.helper.layout = Layout(
