@@ -244,8 +244,11 @@ class ProfileMeetingList(ListView):
             'title': '<a href="//registerguard.com/rg/news/local/">Local</a>',
             'description_short': 'Civic Calendar',
         }
-        context['title_string'] = \
-            context['event_list'][0].creator.profile.pretty_name
+        if not context['event_list']:
+            context['title_string'] = u''
+        else:
+            context['title_string'] = \
+                context['event_list'][0].creator.profile.pretty_name
         return context
 
 class TownMeetingList(ListView):
@@ -268,8 +271,11 @@ class TownMeetingList(ListView):
             'title': '<a href="//registerguard.com/rg/news/local/">Local</a>',
             'description_short': 'Civic Calendar',
         }
-        context['title_string'] = \
-            context['event_list'][0].entity.jurisdiction.name
+        if not context['event_list']:
+            context['title_string'] = u''
+        else:
+            context['title_string'] = \
+                context['event_list'][0].entity.jurisdiction.name
         return context
 
 
@@ -292,8 +298,11 @@ class EntityMeetingList(ListView):
             'title': '<a href="//registerguard.com/rg/news/local/">Local</a>',
             'description_short': 'Civic Calendar',
         }
-        context['title_string'] = \
-            '{0} {1}'.format(context['event_list'][0].creator.profile.pretty_name, context['event_list'][0].entity.name)
+        if not context['event_list']:
+            context['title_string'] = u''
+        else:
+            context['title_string'] = \
+                u'{0} {1}'.format(context['event_list'][0].creator.profile.pretty_name, context['event_list'][0].entity.name)
         return context
 
 
