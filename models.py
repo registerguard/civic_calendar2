@@ -26,7 +26,7 @@ class Jurisdiction(models.Model):
 @python_2_unicode_compatible
 class Entity(models.Model):
     name = models.CharField(max_length=255)
-    slug = models.SlugField(blank=True)
+    slug = models.SlugField(blank=True, max_length=100)
     owner = models.ForeignKey(User, null=True)
     jurisdiction = models.ForeignKey(Jurisdiction)
 
