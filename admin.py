@@ -40,6 +40,7 @@ class ProfileInline(admin.StackedInline):
 
 class CustomeUserAdmin(UserAdmin):
     list_display = ('username', 'profile_pretty_name', 'email', 'first_name', 'last_name', 'is_staff',)
+    list_editable = ('first_name', 'last_name',)
     inlines = (ProfileInline,)
 
     def profile_pretty_name(self, obj):
