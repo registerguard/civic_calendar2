@@ -98,10 +98,9 @@ class WebMeetingListView(ListView):
         ordered = sorted(
             upcoming.get_occurrences(),
             key=operator.attrgetter(
-                'event.entity.jurisdiction.name',
                 'event.start',
-                'event.entity.name',
-            )
+            ),
+            reverse=True
         )
         return ordered
 
@@ -250,6 +249,7 @@ class ProfileMeetingList(ListView):
             context['title_string'] = \
                 context['event_list'][0].creator.profile.pretty_name
         return context
+
 
 class TownMeetingList(ListView):
     '''
