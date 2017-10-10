@@ -57,6 +57,19 @@ class MeetingCreateViewForm(forms.ModelForm):
     title = forms.CharField(required=False)
     end = forms.DateTimeField(required=False)
 
+    def clean(self):
+        cleaned_data = super(MeetingCreateViewForm, self).clean()
+        contact_email = cleaned_data.get('contact_email')
+        contact_phone = cleaned_data.get('contact_phone')
+        website = cleaned_data.get('website')
+
+        if not contact_email and not contact_phone and not website:
+            raise forms.ValidationError(
+                '''You must fill in at least one of the three fields below:
+                "Contact phone," "Contact email" or "Website."'''
+            )
+
+
     class Meta:
         model = Event
         fields = '__all__'
