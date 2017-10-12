@@ -62,6 +62,8 @@ class MeetingCreateViewForm(forms.ModelForm):
         contact_email = cleaned_data.get('contact_email')
         contact_phone = cleaned_data.get('contact_phone')
         website = cleaned_data.get('website')
+        start = cleaned_data.get('start')
+        location = cleaned_data.get('location')
 
         if not contact_email and not contact_phone and not website:
             raise forms.ValidationError(
@@ -69,6 +71,14 @@ class MeetingCreateViewForm(forms.ModelForm):
                 "Contact phone," "Contact email" or "Website."'''
             )
 
+        try:
+            already_exists = Event.objects.get(start=start, location=location)
+            raise forms.ValidationError(
+                '''An event starting at this time at this location already exists: 
+                {0}'''.format(already_exists.__str__())
+            )
+        except Event.DoesNotExist:
+            already_exists = None
 
     class Meta:
         model = Event
