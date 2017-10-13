@@ -54,6 +54,7 @@ class CustomeUserAdmin(UserAdmin):
 
 
 class JurisdictionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug',)
     prepopulated_fields = {'slug': ('name',)}
 
 
