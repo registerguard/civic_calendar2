@@ -173,9 +173,10 @@ class OccurrenceListView(ListView):
         )
 
         for occurrence_item in ordered:
-            # replace u'\r\n' with u' ' in Agenda text
+            # replace u'\r\n', '\t' and any number of spaces with u' ' in 
+            # Agenda text
             occurrence_item.event.agenda = \
-                occurrence_item.event.agenda.replace(u'\r\n', u' ')
+                u" ".join(occurrence_item.event.agenda.split())
 
         return ordered
 
