@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.contrib.auth.views import login, logout, password_change,\
     password_change_done
+from schedule.urls import urlpatterns as django_schedule_urls
 
 from . import views
 
@@ -75,3 +76,6 @@ urlpatterns = [
         name='password_change_done',
     ),
 ]
+
+# Include django-scheduler urls
+urlpatterns += django_schedule_urls
