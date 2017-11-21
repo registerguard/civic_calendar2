@@ -37,11 +37,6 @@ urlpatterns = [
         name='public-meeting-list',
     ),
     url(
-        regex=r'^meetings/$',
-        view=views.WebMeetingListView.as_view(),
-        name='public-meeting-list',
-    ),
-    url(
         regex=r'^meetings/(?P<slug>[-\w]+)/$',
         view=views.ProfileMeetingList.as_view(),
         name='profile-meeting-list',
