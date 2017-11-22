@@ -68,7 +68,7 @@ googletag.defineSlot('/30582678/RGM/news/weather', [[320, 50], [728, 90]], 'lead
 
 {% block body %}
 <div class="w_row">
-    <div class="w_col w_B300 w_C640 w_D980 Bla Cla Dla">
+	<div class="w_col w_B300 w_C640 w_D980 Bla Cla Dla">
 		<ul class="li3">
 		{% for occurrence in object_list %}
 		<li>
@@ -103,6 +103,9 @@ googletag.defineSlot('/30582678/RGM/news/weather', [[320, 50], [728, 90]], 'lead
 		</li>
 		{% endfor %}
 		</ul>
+
+		{% include "./_pagination.html" %}
+
 	</div> <!-- /.w_col -->
 	
 	<div class="w_col w_B300 Blb Clb Dlb">

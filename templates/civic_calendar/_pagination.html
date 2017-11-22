@@ -1,0 +1,22 @@
+{% if is_paginated %}
+<hr>
+<div class="split">
+
+    {% if page_obj.has_previous %}
+    <p class="split-first pointer">
+        <a href="?page={{ page_obj.previous_page_number }}">« Previous</a>
+    </p>
+    {% endif %}
+
+    <p class="split-middle note Aoff Boff">
+        Page {{ page_obj.number }} of {{ paginator.num_pages }}
+    </p>
+
+    {% if page_obj.has_next %}
+    <p class="split-last pointer">
+        <a href="?page={{ page_obj.next_page_number }}">Next »</a>
+    </p>
+    {% endif %}
+
+</div><!-- /.split -->
+{% endif %}

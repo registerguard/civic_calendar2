@@ -84,6 +84,7 @@ class WebMeetingListView(ListView):
     '''
     Provide a Web view listing for public consumption.
     '''
+    paginate_by = 15
     template_name = 'civic_calendar/meeting_list.html'
 
     def get_queryset(self):
@@ -231,6 +232,7 @@ class ProfileMeetingList(ListView):
     Event.objects.filter(creator__profile__slug='pretty-name-slug-here')
     '''
     model = Event
+    paginate_by = 15
     template_name = 'civic_calendar/meeting_list_profile.html'
 
     def get_queryset(self):
@@ -259,6 +261,7 @@ class TownMeetingList(ListView):
     Event.objects.filter(entity__jurisdiction__slug='slugified-town-name')
     '''
     model = Event
+    paginate_by = 15
     template_name = 'civic_calendar/meeting_list_town.html'
 
     def get_queryset(self):
@@ -287,6 +290,7 @@ class EntityMeetingList(ListView):
     Event.object.filter(entity.slug=slug).order_by('-start')
     '''
     model = Event
+    paginate_by = 15
     template_name = 'civic_calendar/meeting_list_entity.html'
 
     def get_queryset(self):
@@ -311,6 +315,7 @@ class DayMeetingList(DayArchiveView):
     queryset = Event.objects.all()
     date_field = 'start'
     allow_future = True
+    paginate_by = 15
 
     def get_context_data(self, **kwargs):
         context = super(DayMeetingList, self).get_context_data(**kwargs)
