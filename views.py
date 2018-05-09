@@ -139,7 +139,7 @@ class OccurrenceListView(ListView):
     '''
     Display online meetings list/outputs InDesign-formatted text
     '''
-    template_name = 'civic_calendar/occurrence_list.html'
+    template_name = 'civic_calendar/occurrence_list_no_formatting.html'
     pacific = pytz.timezone('US/Pacific')
 
     def get_queryset(self):
