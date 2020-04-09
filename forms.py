@@ -72,14 +72,17 @@ class MeetingCreateViewForm(forms.ModelForm):
                 "Contact phone," "Contact email" or "Website."'''
             )
 
-        try:
-            already_exists = Event.objects.exclude(id=meeting_id).get(start=start, location=location)
-            raise forms.ValidationError(
-                '''An event starting at this time at this location already exists: 
-                {0}'''.format(already_exists.__str__())
-            )
-        except Event.DoesNotExist:
-            already_exists = None
+        #
+        # This check appears to be using out-of-date arguments, backing out ... 
+        #
+        # try:
+        #     already_exists = Event.objects.exclude(id=meeting_id).get(start=start, location=location)
+        #     raise forms.ValidationError(
+        #         '''An event starting at this time at this location already exists: 
+        #         {0}'''.format(already_exists.__str__())
+        #     )
+        # except Event.DoesNotExist:
+        #     already_exists = None
 
     class Meta:
         model = Event
