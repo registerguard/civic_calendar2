@@ -97,7 +97,7 @@ class MeetingCreateViewForm(forms.ModelForm):
         }
         help_texts = {
             'start': _('<div class="alert alert-info"><b>Note:</b> Use military time: e.g., 1 p.m. is 13:00.</div>'),
-            'location': _('<div class="alert alert-info"><a href="mailto:webeditors@registerguard.com?subject=Civic%20calendar%20app%20meeting%20location%20suggestion">Not finding an address? <b>Suggest</b></a> a meeting location.</div>'),
+            'location': _('<div class="alert alert-info"><a href="mailto:webdesk@registerguard.com?subject=Civic%20calendar%20app%20meeting%20location%20suggestion">Not finding an address? <b>Suggest</b></a> a meeting location.</div>'),
             'agenda': _('<div class="alert alert-info"><b>OPTIONAL</b>: A <b><i>brief</i></b> description of agenda. <a href="#calendar-examples"><b>See the examples below</b></a> or check the Calendar item in <i>The Register-Guard</i> City/Region section for others.<br><b>Note:</b> 500-character limit.</div>'),
             'website': _(
                 '''
