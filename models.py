@@ -47,7 +47,7 @@ class Location(models.Model):
     # http://stackoverflow.com/questions/2755027/geocoding-an-address-on-form-submission
     # ... or geopy?
     name = models.CharField(max_length=255, blank=True)
-    address = models.CharField(max_length=255)
+    address = models.CharField(max_length=255, help_text=u"Don't put period on end of address, i.e., St not St. End punctuation is handled in templates.")
     city = models.CharField(max_length=255, blank=True)
     lat = models.FloatField(blank=True, null=True)
     lng = models.FloatField(blank=True, null=True)
