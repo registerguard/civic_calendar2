@@ -9,6 +9,9 @@ from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import localtime
 from django.utils.translation import ugettext, ugettext_lazy as _
+from django.urls import reverse
+
+import pytz
 
 # Create your models here.
 # http://django-scheduler.readthedocs.io/en/latest/settings.html#scheduler-base-classes
