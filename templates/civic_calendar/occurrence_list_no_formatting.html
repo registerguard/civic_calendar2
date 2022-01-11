@@ -1,5 +1,5 @@
 
 {% autoescape off %}{% for occurrence in event_list %}{% ifchanged %}{{ occurrence.event.entity.jurisdiction.name }}{% endifchanged %}{% ifchanged occurrence.event.entity.jurisdiction.name occurrence.event.start|date:'l' %}
 {{ occurrence.event.start|date:'l'|upper }}
-{% endifchanged %}{{ occurrence.event.entity.name }} — {{ occurrence.event.start|date:'P' }}, {{ occurrence.event.location.name }}, {{ occurrence.event.location.address }}{% if occurrence.event.location.city != occurrence.event.jurisdiction.name and occurrence.event.location.city not in occurrence.event.location.name %}, {{ occurrence.event.location.city }}{% endif %}.{% if occurrence.event.agenda %} {{ occurrence.event.agenda }}.{% endif %}{{ occurrence.event.contact_string }}
+{% endifchanged %}{{ occurrence.event.entity.name }} — {{ occurrence.event.start|date:'P' }}, {{ occurrence.event.location.name }}, {{ occurrence.event.location.address }}{% if occurrence.event.location.city != occurrence.event.entity.jurisdiction.name %},{{ occurrence.event.location.city }}{% endif %}{% if occurrence.event.agenda %} {{ occurrence.event.agenda }}.{% endif %}{{ occurrence.event.contact_string }}
 {% endfor %}{% endautoescape %}

@@ -8,7 +8,7 @@ import pytz
 from braces.views import LoginRequiredMixin
 
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import get_template
 from django.views.generic  import CreateView, DeleteView, ListView, UpdateView
@@ -210,7 +210,9 @@ class OccurrenceListView(ListView):
             # Convert Unix line endings to Windows
             if self.get_context_data()['os'] == 'WIN':
                 html = html.replace(u'\n', u'\r\n')
-            html = html.encode('utf-16-le')
+
+            # Break up so that we can encode UTF-16 little endian
+            # html = html.encode('utf-16-le')
             response = HttpResponse(html, content_type='text/plain')
             response['Content-Disposition'] = \
                 'attachment; filename=cr.calendar.txt'
