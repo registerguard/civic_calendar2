@@ -1,0 +1,5 @@
+
+{% autoescape off %}{% for occurrence in event_list %}{% ifchanged %}<h2 class="presto-h2">{{ occurrence.event.entity.jurisdiction.name }}</h2>{% endifchanged %}{% ifchanged occurrence.event.entity.jurisdiction.name occurrence.event.start|date:'l' %}
+<p><strong>{{ occurrence.event.start|date:'l'|upper }}</strong></p>
+{% endifchanged %}<p><strong>{{ occurrence.event.entity.name }}</strong> — {{ occurrence.event.start|date:'P' }}, {{ occurrence.event.location.name }}, {{ occurrence.event.location.address }}{% if occurrence.event.location.city %}{% if occurrence.event.location.city != occurrence.event.entity.jurisdiction.name %}, {{ occurrence.event.location.city }}{% endif %}{% endif %}.{% if occurrence.event.agenda %} {{ occurrence.event.agenda }}.{% endif %}{{ occurrence.event.contact_string }}</p>
+{% endfor %}{% endautoescape %}

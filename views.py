@@ -204,18 +204,38 @@ class OccurrenceListView(ListView):
         encode to utf-16le, the encoding that Adobe InDesign demands. 
         '''
         if self.get_context_data()['event_list']:
-            # Serve Adobe InDesign-formatted file download.
-            template = get_template(self.template_name)
+            # Was there an html GET argument in the request?
+            html_output = self.request.GET.get('html', '')
+   
+            # If html_output, use html template, else use template set at top of Class.
+            if html_output:
+                template = get_template('civic_calendar/occurrence_list_html_formatting.html')
+            else:
+                template = get_template(self.template_name)
+
             html = template.render(self.get_context_data())
+
+            user_os = self.get_context_data()['os']
             # Convert Unix line endings to Windows
-            if self.get_context_data()['os'] == 'WIN':
+            if user_os == 'WIN':
                 html = html.replace(u'\n', u'\r\n')
 
-            # Break up so that we can encode UTF-16 little endian
-            # html = html.encode('utf-16-le')
-            response = HttpResponse(html, content_type='text/plain')
-            response['Content-Disposition'] = \
-                'attachment; filename=cr.calendar.txt'
+            # Make line endings Presto-friendly for Mac users
+            if user_os == 'MAC':
+                html = html.replace(u'\n', u'\n\n')
+
+            # Make sure response is utf-8 encoded
+            html = html.encode('utf-8')
+
+
+            if html_output:
+                response = HttpResponse(html, content_type='text/html')
+                response['Content-Disposition'] = \
+                    'attachment; filename=cr.calendar.html'
+            else:
+                response = HttpResponse(html, content_type='text/plain')
+                response['Content-Disposition'] = \
+                    'attachment; filename=cr.calendar.txt'
         else:
             # Serve a plain 'ol web page if no upcoming meetings.
             template = get_template(
