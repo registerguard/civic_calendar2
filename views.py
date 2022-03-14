@@ -200,8 +200,24 @@ class OccurrenceListView(ListView):
 
     def get(self, *args, **kwargs):
         '''
+        Create 'tomorrow' variable that both get_context() and get_context_data() methods use.
+        '''
+        custom_date = self.request.GET.get('date', '')
+
+        if custom_date:
+            tomorrow = self.pacific.localize(
+                datetime.datetime.strptime(custom_date, '%Y%m%d') + \
+                datetime.timedelta(days=1)
+            )
+        else:
+            tomorrow = self.pacific.localize(
+                datetime.datetime.now().replace(hour=0, minute=0) + \
+                datetime.timedelta(days=1)
+            )
+
+        '''
         Set the HTTP response 'Content-Disposition' header & content_type and
-        encode to utf-16le, the encoding that Adobe InDesign demands. 
+        encode to utf-8.
         '''
         if self.get_context_data()['event_list']:
             # Was there an html GET argument in the request?
